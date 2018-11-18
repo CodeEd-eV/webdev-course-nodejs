@@ -1,10 +1,14 @@
 // importing all required module we need in this file
 const http = require('http');
 const express = require('express');
+const bodyParser = require('body-parser');
 const database = require('./database');
 
 // create an express server application
 const expressApp = express();
+
+// register middleware
+expressApp.use(bodyParser.json({ strict: false }));
 
 // register a GET route for getting user information
 expressApp.get('/users/:userID', (req, res) => {
@@ -22,10 +26,31 @@ expressApp.get('/users/:userID/topsecret', (req, res) => {
 
     database.getUserByID(userID, (user) => {
         if (user.isLoggedIn()) {
-            res.send('The meaning of life is 42!').end();
+            res.json({ secret: 'The meaning of life is 42!' });
         } else {
-            res.status(403).send('You shall not pass! Please login, first ;)').end();
+            res.status(401).json({ error: 'You shall not pass! Please login, first ;)' });
         }
+    });
+});
+
+// register a POST route to enable creation of new users
+expressApp.post('/users/', (req, res) => {
+    if (req.body === undefined || req.body === null) {
+        return res.status(400).json({ error: 'Body is missing' });
+    }
+
+    const { firstName, lastName } = req.body;
+
+    if (firstName === undefined || firstName === null || typeof firstName !== 'string') {
+        return res.status(400).json({ error: 'Body property <firstName> is missing or not of type string' });
+    }
+
+    if (lastName === undefined || lastName === null || typeof lastName !== 'string') {
+        return res.status(400).json({ error: 'Body property <lastName> is missing or not of type string' });
+    }
+
+    database.createUser(firstName, lastName, (user) => {
+        res.status(201).json({ user });
     });
 });
 

@@ -22,6 +22,18 @@ const getUserByID = (userID, callback) => {
     }, 1000);
 };
 
+const createUser = (firstName, lastName, callback) => {
+    const userID = Math.floor(Math.random() * 1000) + 1;
+
+    // fake async behaviour
+    setTimeout(() => {
+        const user = new User(userID, firstName, lastName);
+
+        callback(user);
+    }, 1000);
+};
+
 module.exports = {
-    getUserByID
+    getUserByID,
+    createUser
 }
