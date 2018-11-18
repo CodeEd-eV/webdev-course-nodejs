@@ -10,6 +10,11 @@ const expressApp = express();
 // register middleware
 expressApp.use(bodyParser.json({ strict: false }));
 
+// define some helper functions for cleaner code
+const sendError = (res, statusCode, errorMessage) => {
+    res.status(statusCode).json({ error: errorMessage });
+};
+
 // register a GET route for getting user information
 expressApp.get('/users/:userID', (req, res) => {
     const userID = req.params.userID;
@@ -28,26 +33,37 @@ expressApp.get('/users/:userID/topsecret', (req, res) => {
         if (user.isLoggedIn()) {
             res.json({ secret: 'The meaning of life is 42!' });
         } else {
-            res.status(401).json({ error: 'You shall not pass! Please login, first ;)' });
+            sendError(res, 401, 'You shall not pass! Please login, first ;)');
         }
     });
 });
 
-// register a POST route to enable creation of new users
-expressApp.post('/users/', (req, res) => {
+// user defined middleware to validate body properties
+const bodyRequired = (req, res, next) => {
     if (req.body === undefined || req.body === null) {
         return res.status(400).json({ error: 'Body is missing' });
     }
 
+    next();
+}
+
+const createUserBodyValidation = (req, res, next) => {
     const { firstName, lastName } = req.body;
 
     if (firstName === undefined || firstName === null || typeof firstName !== 'string') {
-        return res.status(400).json({ error: 'Body property <firstName> is missing or not of type string' });
+        return sendError(res, 400, 'Body property <firstName> is missing or not of type string');
     }
 
     if (lastName === undefined || lastName === null || typeof lastName !== 'string') {
-        return res.status(400).json({ error: 'Body property <lastName> is missing or not of type string' });
+        return sendError(res, 400, 'Body property <lastName> is missing or not of type string');
     }
+
+    next();
+}
+
+// register a POST route to enable creation of new users
+expressApp.post('/users/', bodyRequired, createUserBodyValidation, (req, res) => {
+    const { firstName, lastName } = req.body;
 
     database.createUser(firstName, lastName, (user) => {
         res.status(201).json({ user });
