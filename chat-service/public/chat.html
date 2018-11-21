@@ -1,0 +1,54 @@
+<html>
+<!-- The <head> is the section where all "invisible" information is stored -->
+<head>
+    <!-- Defines the text layout (mandatory) -->
+    <meta charset="utf-8">
+    <!-- Makes a page responsive and "good looking" on mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Page Title -->
+    <title>Chat App</title>
+    <!-- Stylesheets that contain some CSS to handle the looks of our website -->
+    <link rel="stylesheet" type="text/css" href="./chat.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+<!-- The <body> is the section where all our pages elements are defined -->
+<body>
+    <!-- The mainGrid class is our main Layout box. It divides the page into a sidebar and a main content area -->
+    <div class="mainGrid">
+        <!-- The aside is the sidebar of the page (could be also a <div> with a class, but for accessibility reasons we chose the pre-defined HTML tag) -->
+        <aside id="sideBar">
+            <!-- Every "chat"-div resembles a contact in the sidebar -->
+            
+        </aside>
+        <!-- The <main> area is where we will implement our chat -->
+        <main>
+            <!-- The "chatInfos"-div contains the header-Information of the chat -->
+            <div class="chatInfos" id="chatInfo">
+                <!-- We need an additional container to corretly position our elements -->
+                <div class="contact">
+                    <h1></h1>
+                    <p></p>
+                    <!-- Our navigation button that will only be shown in the mobile layout of our page -->
+                    <img src="back.svg" />
+                </div>
+            </div>
+            <!-- In this area we display our chat messages -->
+            <div class="content" id="messageContainer">
+                <!-- Each "msg"-div is one chat message, left and right define if the message is from you or your chat partner -->
+                
+            </div>
+            <!-- This area contains the input and send box -->
+            <div class="input">
+                <!-- Here we can enter our chat-Message -->
+                <input type="text" id="textBox">
+                <!-- In this box the send-Button is placed -->
+                <div class="sendBtn" id="sendBtn">
+                    <img src="send.svg" />
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="text/javascript", src="chat.js"></script>
+</body>
+
+</html>

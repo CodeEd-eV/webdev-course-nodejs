@@ -1,0 +1,163 @@
+/* Styles on the body affect the whole page */
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+/* Hides the scrollbar https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: rgba(0,0,0,0);
+}
+/* Defines the layout of the page */
+.mainGrid {
+    /* We will use the grid layout to position our elements */
+    display: grid;
+    /* The first column in the grid is 30% wide, the second one is 70% wide */
+    grid-template-columns: 30% 70%;
+    /* We specify that our page content is exactly 100% high, meaning that it won't start scrolling when the pages content doesn't fit on the screen anymore */
+    height: 100%;
+}
+
+.mainGrid aside {
+    /* We position our sidebar to cover exactly the first column of our mainGrid */
+    grid-column-start: 1;
+    grid-column-end: 2;
+    /* We specifically say that the sidebar can be scrolled independently from the other sites content */
+    overflow-y: scroll;
+    /* We give our sidebar a border to the right to it is clearly seperated from the main area */
+    border-right: 1px solid gainsboro;
+}
+/* The style applies to every contact we have in our sidebar */
+.mainGrid aside .chat {
+    /* We're telling the container to cover 100% of the sidebars width */
+    width: 100%;
+    /* We give it a top and bottom padding of 10px and a left and right padding of 0
+    Information on what padding, margin and border are (important): https://www.w3schools.com/css/css_boxmodel.asp
+    Detailed explanation of padding: https://www.w3schools.com/css/css_padding.asp 
+    */
+    padding: 10px 0;
+    /* We specify that the text inside of our container should be only 80% of the size that it normally is */
+    font-size: 80%;
+    /* Transition handles animations inside of CSS. In this case we say that whatever CSS attribute changes in our .chat, this style should always be changed through an animation that lasts half a second 
+    https://www.w3schools.com/css/css3_transitions.asp 
+    */
+    transition: all .5s;
+}
+/* Here we specify the behavior of our container when the user puts his cursor over it 
+https://www.w3schools.com/cssref/sel_hover.asp 
+*/
+.mainGrid aside .chat:hover {
+    background-color: aliceblue;
+    /* When the user hovers our element his cursor changes to a pointer https://www.w3schools.com/cssref/pr_class_cursor.asp  */
+    cursor: pointer;
+}
+/* We have to use a specific container that handles just the padding because then the padding of this content container doesn't change the overall apperance of our container (if we would put the padding onto the .chat, the .chat box would get 20px bigger on each side */ 
+.mainGrid aside .chat .content {
+    padding-left: 20px;
+}
+.mainGrid aside .chat .content p {
+    height: 20px;
+    overflow: hidden;
+    /* Here we specify that paragraph elements inside of our .chat box should be shortened by ... if they don't fit the container https://www.w3schools.com/cssref/css3_pr_text-overflow.asp */
+    text-overflow: ellipsis;
+}
+/* We specified exactly how big each element in our main container should be: the header would be 10% high, the messages-area 80% and the input area another 10% (with some speciality, more on that down below */
+/* Our information bar above the actual chat messages */
+.mainGrid main .chatInfos {
+    height: 10%;
+    width: 100%;
+    border-bottom: 1px solid gainsboro;
+}
+.mainGrid main .chatInfos .contact {
+    padding-left: 20px;
+    padding-top: 10px;
+}
+/* Here we overwrite the standard appearance of h1 and p who usually have an automatical margin added */
+.mainGrid main .chatInfos .contact h1, .mainGrid main .chatInfos .contact p {
+    margin: 0;
+}
+/* This is our navigation button (used in later sessions) with which we can switch between a specific chat and our chat selection on mobile view. In desktop view this button is not visible */
+.mainGrid main .chatInfos .contact img {
+    display: none;
+    /* We position this button absolute, meaning we tell it exactly where it has to be on the page. https://www.w3schools.com/css/css_positioning.asp  */
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    width: 40px;
+}
+/* Same as in the sidebar we specify that the messages area should be scrollable */
+.mainGrid main .content {
+    height: 80%;
+    background-color: aliceblue;
+    overflow: scroll;
+}
+/* The style for one specific message box */
+.mainGrid main .content .msg {
+    width: 50%;
+    padding: 20px;
+    /* We specify that the corners of our message box should be rounded (by a radius of 10px) */
+    border-radius: 10px;
+    margin: 10px 20px;
+}
+/* This style will be used to indicate who sent which chat message */
+.mainGrid main .content .left {
+    /* makes sure that the message box is positioned as left as possible */
+    float: left;
+    background-color: gainsboro;
+}
+.mainGrid main .content .right {
+    /* makes sure that the message box is positioned as right as possible */
+    float: right;
+    background-color: lightgreen;
+}
+/* Our input section where the user can enter text and send his message */
+.mainGrid main .input {
+    /* Here we have a speciality: All together, our page has a height of 100%. The header is 10% and the main content is 80%. This would mean that we have 10% left for our input bar. BUT: Each the input bar and the header have an additional border that is exactly 1px thick. That means that if the input bar is 10% high, our whole content whould be 100%+2px high which means it wouldn't fit onto the page. Therefore we use the calc-Function in CSS. With that, you can calculate any measures in CSS together (for example that our height is 10% minus the 2px that we need to subtract)
+    https://www.w3schools.com/cssref/func_calc.asp  */ 
+    height: calc(10% - 2px);
+    width: 100%;
+    border-top: 1px solid gainsboro;
+}
+.mainGrid main .input input {
+    width: 80%;
+    height: 100%;
+    border: 0;
+}
+.mainGrid main .input .sendBtn {
+    width: 20%;
+    height: 100%;
+    float: right;
+}
+.mainGrid main .input .sendBtn img {
+    width: 100%;
+    text-align: center;
+    height: 80%;
+    margin-top: 5%;
+    transition: all .5s;
+}
+/* Here we specify how our page should behave with different screens (responsive layout). It is advisable to put such statements at the end of your CSS as they usually overwrite standard behavior of your formerly specified CSS.
+https://www.w3schools.com/css/css_rwd_mediaqueries.asp  */
+/* We specify that the following rules should apply to all screens that have a width of up to 1200px */
+@media only screen and (max-width: 1200px) {
+    /* If those rules apply our page should consist of a grid with only one column that spans the whole page */
+    .mainGrid {
+        display: grid;
+    grid-template-columns: 100%;
+    height: 100%;
+    }
+    /* For such screens the sidebar will not be displayed */
+    .mainGrid aside {
+        display: none;
+    }
+    /* Our one big column will be used by our main content (the actual chat) */
+    .mainGrid main {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+    /* We tell our navigation button to show up */
+    .mainGrid main .chatInfos .contact img {
+        display: block;
+    }
+
+}
